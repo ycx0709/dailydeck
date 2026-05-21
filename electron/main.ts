@@ -20,7 +20,7 @@ function createWindow(): BrowserWindow {
     title: "DailyDeck",
     backgroundColor: "#faf9f5",
     webPreferences: {
-      preload: join(__dirname, "preload.js"),
+      preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
       nodeIntegration: false
     }

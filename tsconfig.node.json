@@ -6,5 +6,5 @@
     "outDir": "dist-electron",
     "types": ["node", "electron"]
   },
-  "include": ["electron/**/*.ts", "src/shared/**/*.ts"]
+  "include": ["electron/**/*.ts", "electron/**/*.cts", "src/shared/**/*.ts"]
 }
