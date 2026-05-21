@@ -108,6 +108,13 @@ input:focus {
   padding: 0 2px;
 }
 
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
 .app-header h1,
 .panel h2 {
   margin: 0;
@@ -136,33 +143,58 @@ input:focus {
   object-fit: cover;
 }
 
-.settings-panel {
-  display: grid;
-  gap: 8px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-  padding: 10px;
+.icon-text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.settings-header {
+.settings-page {
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+}
+
+.settings-page-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
 
-.settings-header div {
+.settings-intro {
   display: grid;
-  gap: 2px;
+  gap: 4px;
 }
 
-.settings-header strong {
+.settings-intro p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.settings-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  padding: 12px;
+}
+
+.settings-card-header {
+  display: grid;
+  gap: 3px;
+}
+
+.settings-card-header strong {
   font-size: 14px;
   font-weight: 650;
 }
 
-.settings-header span,
+.settings-card-header span,
 .settings-hint,
 .settings-field span {
   color: var(--muted);
@@ -360,7 +392,7 @@ input:focus {
 .clipboard-list {
   display: grid;
   gap: 0;
-  max-height: calc(100vh - 270px);
+  max-height: calc(100vh - 178px);
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;

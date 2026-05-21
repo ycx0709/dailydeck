@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { DailyDeckApi } from "../electron/preload.cjs";
 import { createInitialData } from "../src/shared/defaults";
@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe("clipboard-only app shell", () => {
-  it("renders clipboard workflow, AI settings, and does not request system metrics", async () => {
+  it("keeps AI key configuration on a separate settings page", async () => {
     const data = {
       ...createInitialData(),
       clipboardItems: [
@@ -44,9 +44,19 @@ describe("clipboard-only app shell", () => {
 
     expect(await screen.findByText("剪贴板 Clipboard")).toBeTruthy();
     expect(await screen.findByText("remember this")).toBeTruthy();
-    expect(screen.getByText("AI Split 拆词配置")).toBeTruthy();
+    expect(screen.queryByLabelText("DeepSeek API Key")).toBeNull();
     await waitFor(() => expect(api.getData).toHaveBeenCalled());
 
+    fireEvent.click(screen.getByText("设置"));
+
+    expect(await screen.findByText("设置 Settings")).toBeTruthy();
+    expect(screen.getByLabelText("DeepSeek API Key")).toBeTruthy();
+    expect(screen.queryByText("remember this")).toBeNull();
+
+    fireEvent.click(screen.getByText("返回"));
+
+    expect(await screen.findByText("remember this")).toBeTruthy();
+    expect(screen.queryByLabelText("DeepSeek API Key")).toBeNull();
     expect(screen.queryByText("Today")).toBeNull();
     expect(screen.queryByText("Quick notes")).toBeNull();
     expect(screen.queryByText("High usage")).toBeNull();
