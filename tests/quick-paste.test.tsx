@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createInitialData } from "../src/shared/defaults";
 import type { DailyDeckApi } from "../electron/preload.cjs";
+import { createInitialData } from "../src/shared/defaults";
 
 afterEach(() => {
   vi.resetModules();

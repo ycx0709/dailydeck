@@ -45,4 +45,10 @@ describe("deepseek clipboard analysis", () => {
     expect(result.segments).toEqual(["明天 10 点开会", "地点在会议室 A"]);
     expect(result.entities).toEqual([{ label: "时间", value: "明天 10 点" }]);
   });
+
+  it("fails fast when AI split is used without a local API key", async () => {
+    await expect(
+      analyzeClipboardTextWithDeepSeek("hello", { apiKey: "", model: "deepseek-v4-flash" })
+    ).rejects.toThrow("DeepSeek API Key is not configured.");
+  });
 });

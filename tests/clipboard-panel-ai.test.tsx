@@ -37,14 +37,14 @@ describe("clipboard panel AI split", () => {
     );
 
     expect(screen.queryByText("去换行")).toBeNull();
-    expect(screen.queryByText("JSON格式化")).toBeNull();
+    expect(screen.queryByText("JSON 格式化")).toBeNull();
 
     fireEvent.click(screen.getByText("AI 拆分"));
 
     await waitFor(() => expect(onAnalyze).toHaveBeenCalledWith(clipboardItem.text));
     expect(await screen.findByText("会议安排")).toBeTruthy();
     expect(screen.getByText("明天 10 点开会")).toBeTruthy();
-    fireEvent.click(screen.getByLabelText("复制拆分片段：明天 10 点开会"));
+    fireEvent.click(screen.getByLabelText("复制拆分片段: 明天 10 点开会"));
     expect(onCopyText).toHaveBeenCalledWith("明天 10 点开会");
   });
 });

@@ -4,6 +4,11 @@ dist-renderer/
 installer/
 release/
 .vite/
+.playwright-mcp/
 .npm-cache/
 coverage/
 *.log
+*.local
+.env
+.env.*
+dailydeck.json

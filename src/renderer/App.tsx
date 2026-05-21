@@ -4,6 +4,7 @@ import type { PersistedData } from "../shared/types";
 import { dailyDeckApi } from "./api";
 import mascotUrl from "./assets/dailydeck-mascot.png";
 import { ClipboardPanel } from "./components/ClipboardPanel";
+import { SettingsPanel } from "./components/SettingsPanel";
 import { StatusBar } from "./components/StatusBar";
 
 export function App() {
@@ -23,10 +24,12 @@ export function App() {
       <header className="app-header">
         <div>
           <h1>DailyDeck 剪贴板</h1>
-          <p>Clipboard history, 本地保存最近复制的文本</p>
+          <p>Clipboard history · 本地保存 · 快速搜索</p>
         </div>
         <img className="app-mascot" src={mascotUrl} alt="DailyDeck clipboard assistant" />
       </header>
+
+      <SettingsPanel settings={data.settings} onSave={(updates) => refreshData(dailyDeckApi.updateSettings(updates))} />
 
       <section className="clipboard-workspace">
         <ClipboardPanel

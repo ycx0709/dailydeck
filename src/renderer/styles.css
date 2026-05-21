@@ -136,6 +136,84 @@ input:focus {
   object-fit: cover;
 }
 
+.settings-panel {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 10px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.settings-header div {
+  display: grid;
+  gap: 2px;
+}
+
+.settings-header strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.settings-header span,
+.settings-hint,
+.settings-field span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.settings-status {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.settings-status.ready {
+  border-color: #b9c8a8;
+  background: #edf2e8;
+  color: #587146;
+}
+
+.settings-status.missing {
+  border-color: var(--line-strong);
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(120px, 220px) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.settings-field {
+  display: grid;
+  gap: 4px;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.settings-actions button {
+  white-space: nowrap;
+}
+
+.settings-hint {
+  margin: 0;
+}
+
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -282,7 +360,7 @@ input:focus {
 .clipboard-list {
   display: grid;
   gap: 0;
-  max-height: calc(100vh - 168px);
+  max-height: calc(100vh - 270px);
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -580,4 +658,14 @@ input:focus {
 
 .quick-paste-footer {
   text-align: center;
+}
+
+@media (max-width: 760px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-actions {
+    justify-content: flex-start;
+  }
 }

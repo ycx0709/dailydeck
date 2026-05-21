@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createInitialData } from "../shared/defaults";
-import type { ClipboardItem, PersistedData } from "../shared/types";
 import { clipboardCategoryLabels, searchClipboardItems } from "../shared/clipboardTools";
+import type { ClipboardItem, PersistedData } from "../shared/types";
 
 const dailyDeckApi = window.dailyDeck;
 

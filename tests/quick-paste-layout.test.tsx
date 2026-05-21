@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createInitialData } from "../src/shared/defaults";
 import type { DailyDeckApi } from "../electron/preload.cjs";
+import { createInitialData } from "../src/shared/defaults";
 
 afterEach(() => {
   vi.resetModules();
@@ -16,7 +16,7 @@ describe("quick paste visual layout", () => {
         {
           id: "clip-long",
           text: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9".repeat(8),
-          title: "DailyDeck 剪切板 APIkey",
+          title: "DailyDeck 剪贴板 API key",
           pinned: true,
           createdAt: "2026-05-21T00:00:00.000Z",
           lastCopiedAt: "2026-05-21T00:00:00.000Z"
@@ -43,12 +43,12 @@ describe("quick paste visual layout", () => {
 
     render(<QuickPasteApp />);
 
-    const title = await screen.findByText("DailyDeck 剪切板 APIkey");
+    const title = await screen.findByText("DailyDeck 剪贴板 API key");
     const item = title.closest(".quick-paste-item");
 
     expect(item?.classList.contains("quick-paste-item")).toBe(true);
     expect(item).toBeTruthy();
-    expect(item?.querySelector("span")?.textContent).toBe("DailyDeck 剪切板 APIkey");
+    expect(item?.querySelector("span")?.textContent).toBe("DailyDeck 剪贴板 API key");
     expect(item?.querySelector("em")?.textContent).toContain("eyJ0eXAi");
     expect(item?.querySelector("small")?.textContent).toBe("收藏");
   });

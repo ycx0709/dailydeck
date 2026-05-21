@@ -180,7 +180,7 @@ export function ClipboardPanel({
                     <div className="ai-entities">
                       {analysis.entities.map((entity) => (
                         <button key={`${entity.label}-${entity.value}`} onClick={() => onCopyText(entity.value)}>
-                          {entity.label}：{entity.value}
+                          {entity.label}: {entity.value}
                         </button>
                       ))}
                     </div>
@@ -199,11 +199,7 @@ export function ClipboardPanel({
                     <div className="ai-section">
                       <strong>拆分片段</strong>
                       {analysis.segments.map((segment) => (
-                        <button
-                          aria-label={`复制拆分片段：${segment}`}
-                          key={segment}
-                          onClick={() => onCopyText(segment)}
-                        >
+                        <button aria-label={`复制拆分片段: ${segment}`} key={segment} onClick={() => onCopyText(segment)}>
                           {segment}
                         </button>
                       ))}

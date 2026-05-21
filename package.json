@@ -1,7 +1,8 @@
 {
   "name": "dailydeck",
   "version": "0.1.0",
-  "private": true,
+  "description": "Local-first Windows clipboard companion",
+  "private": false,
   "type": "module",
   "main": "dist-electron/electron/main.js",
   "scripts": {

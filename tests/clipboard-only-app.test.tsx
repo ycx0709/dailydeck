@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createInitialData } from "../src/shared/defaults";
 import type { DailyDeckApi } from "../electron/preload.cjs";
+import { createInitialData } from "../src/shared/defaults";
 
 afterEach(() => {
   vi.resetModules();
@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe("clipboard-only app shell", () => {
-  it("renders only clipboard workflow and does not request system metrics", async () => {
+  it("renders clipboard workflow, AI settings, and does not request system metrics", async () => {
     const data = {
       ...createInitialData(),
       clipboardItems: [
@@ -44,6 +44,7 @@ describe("clipboard-only app shell", () => {
 
     expect(await screen.findByText("剪贴板 Clipboard")).toBeTruthy();
     expect(await screen.findByText("remember this")).toBeTruthy();
+    expect(screen.getByText("AI Split 拆词配置")).toBeTruthy();
     await waitFor(() => expect(api.getData).toHaveBeenCalled());
 
     expect(screen.queryByText("Today")).toBeNull();
