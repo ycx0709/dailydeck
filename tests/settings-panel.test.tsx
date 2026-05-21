@@ -11,16 +11,34 @@ describe("settings panel", () => {
     render(<SettingsPanel settings={createInitialData().settings} onBack={onBack} onSave={onSave} />);
 
     expect(screen.getByText("AI 未配置")).toBeTruthy();
-    expect(screen.getByText(/不配置也可正常记录/)).toBeTruthy();
+    expect(screen.queryByText(/不配置/)).toBeNull();
 
     fireEvent.change(screen.getByLabelText("DeepSeek API Key"), { target: { value: "sk-local-only" } });
-    fireEvent.change(screen.getByLabelText("DeepSeek 模型"), { target: { value: "deepseek-v4-flash" } });
-    fireEvent.click(screen.getByText("保存配置"));
+    fireEvent.change(screen.getByLabelText("DeepSeek Model"), { target: { value: "deepseek-v4-flash" } });
+    fireEvent.click(screen.getByText("保存"));
 
     expect(onSave).toHaveBeenCalledWith({
       deepSeekApiKey: "sk-local-only",
       deepSeekModel: "deepseek-v4-flash"
     });
+  });
+
+  it("switches setting labels between Chinese and English", () => {
+    const onBack = vi.fn();
+    const onSave = vi.fn();
+
+    render(<SettingsPanel settings={createInitialData().settings} onBack={onBack} onSave={onSave} />);
+
+    fireEvent.click(screen.getByText("English"));
+
+    expect(screen.getByText("Settings")).toBeTruthy();
+    expect(screen.getByText("AI Split")).toBeTruthy();
+    expect(screen.getByText("Save")).toBeTruthy();
+
+    fireEvent.click(screen.getByText("中文"));
+
+    expect(screen.getByText("设置")).toBeTruthy();
+    expect(screen.getByText("AI 拆词")).toBeTruthy();
   });
 
   it("clears the saved API key and returns to the clipboard page", () => {

@@ -49,7 +49,7 @@ describe("clipboard-only app shell", () => {
 
     fireEvent.click(screen.getByText("设置"));
 
-    expect(await screen.findByText("设置 Settings")).toBeTruthy();
+    expect(await screen.findByText("设置")).toBeTruthy();
     expect(screen.getByLabelText("DeepSeek API Key")).toBeTruthy();
     expect(screen.queryByText("remember this")).toBeNull();
 

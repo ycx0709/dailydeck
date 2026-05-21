@@ -162,17 +162,15 @@ input:focus {
   gap: 10px;
 }
 
+.settings-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .settings-intro {
   display: grid;
   gap: 4px;
-}
-
-.settings-intro p {
-  max-width: 640px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
 }
 
 .settings-card {
@@ -194,8 +192,6 @@ input:focus {
   font-weight: 650;
 }
 
-.settings-card-header span,
-.settings-hint,
 .settings-field span {
   color: var(--muted);
   font-size: 12px;
@@ -242,9 +238,6 @@ input:focus {
   white-space: nowrap;
 }
 
-.settings-hint {
-  margin: 0;
-}
 
 .metric-grid {
   display: grid;

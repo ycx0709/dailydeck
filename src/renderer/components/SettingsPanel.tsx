@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Languages } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { AppSettings } from "../../shared/types";
 
@@ -8,10 +8,39 @@ type Props = {
   onSave: (updates: Partial<AppSettings>) => void;
 };
 
+type Language = "zh" | "en";
+
+const copy = {
+  zh: {
+    back: "返回",
+    title: "设置",
+    toggle: "English",
+    configured: "AI 已配置",
+    missing: "AI 未配置",
+    aiTitle: "AI 拆词",
+    model: "模型 ID",
+    save: "保存",
+    clear: "清空 Key"
+  },
+  en: {
+    back: "Back",
+    title: "Settings",
+    toggle: "中文",
+    configured: "AI Ready",
+    missing: "AI Missing",
+    aiTitle: "AI Split",
+    model: "Model ID",
+    save: "Save",
+    clear: "Clear Key"
+  }
+} satisfies Record<Language, Record<string, string>>;
+
 export function SettingsPanel({ settings, onBack, onSave }: Props) {
   const [apiKey, setApiKey] = useState(settings.deepSeekApiKey ?? "");
   const [model, setModel] = useState(settings.deepSeekModel);
+  const [language, setLanguage] = useState<Language>("zh");
   const hasKey = Boolean(settings.deepSeekApiKey?.trim());
+  const text = copy[language];
 
   useEffect(() => {
     setApiKey(settings.deepSeekApiKey ?? "");
@@ -22,24 +51,34 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
   }, [settings.deepSeekModel]);
 
   return (
-    <section className="panel settings-page" aria-label="设置">
+    <section className="panel settings-page" aria-label={text.title}>
       <div className="settings-page-header">
         <button className="icon-text-button" type="button" onClick={onBack}>
           <ArrowLeft size={15} />
-          返回
+          {text.back}
         </button>
-        <span className={`settings-status ${hasKey ? "ready" : "missing"}`}>{hasKey ? "AI 已配置" : "AI 未配置"}</span>
+        <div className="settings-page-actions">
+          <button
+            className="icon-text-button"
+            type="button"
+            onClick={() => setLanguage((current) => (current === "zh" ? "en" : "zh"))}
+          >
+            <Languages size={15} />
+            {text.toggle}
+          </button>
+          <span className={`settings-status ${hasKey ? "ready" : "missing"}`}>
+            {hasKey ? text.configured : text.missing}
+          </span>
+        </div>
       </div>
 
       <div className="settings-intro">
-        <h2>设置 Settings</h2>
-        <p>这里管理和剪贴板主流程分开的偏好项。DeepSeek Key 只保存在本机，不会进入项目仓库。</p>
+        <h2>{text.title}</h2>
       </div>
 
       <div className="settings-card">
         <div className="settings-card-header">
-          <strong>AI Split 拆词</strong>
-          <span>不配置也可正常记录、收藏、搜索和快速粘贴。</span>
+          <strong>{text.aiTitle}</strong>
         </div>
 
         <div className="settings-grid">
@@ -56,9 +95,9 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
           </label>
 
           <label className="settings-field model-field">
-            <span>模型 ID</span>
+            <span>{text.model}</span>
             <input
-              aria-label="DeepSeek 模型"
+              aria-label="DeepSeek Model"
               value={model}
               onChange={(event) => setModel(event.target.value)}
               placeholder="deepseek-v4-flash"
@@ -75,7 +114,7 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
                 })
               }
             >
-              保存配置
+              {text.save}
             </button>
             <button
               type="button"
@@ -84,12 +123,10 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
                 onSave({ deepSeekApiKey: undefined });
               }}
             >
-              清空 Key
+              {text.clear}
             </button>
           </div>
         </div>
-
-        <p className="settings-hint">AI 拆分只在点击单条剪贴板记录的“AI 拆分”时调用接口。</p>
       </div>
     </section>
   );
