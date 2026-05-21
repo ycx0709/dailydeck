@@ -1,6 +1,8 @@
 node_modules/
 dist-electron/
 dist-renderer/
+installer/
+release/
 .vite/
 .npm-cache/
 coverage/

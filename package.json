@@ -9,13 +9,46 @@
     "electron:build": "tsc -p tsconfig.node.json",
     "web:build": "vite build",
     "build": "npm run electron:build && npm run web:build",
+    "dist": "npm run build && electron-builder --win nsis",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.node.json && tsc -p tsconfig.web.json --noEmit",
     "start": "npm run build && electron ."
   },
+  "build": {
+    "appId": "com.ycx0709.dailydeck",
+    "productName": "DailyDeck",
+    "electronDist": "node_modules/electron/dist",
+    "directories": {
+      "output": "installer"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist-renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/tray.ico",
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DailyDeck"
+    }
+  },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
-    "electron": "^35.0.0",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -28,6 +61,8 @@
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "electron": "^35.0.0",
+    "electron-builder": "^26.8.1",
     "jsdom": "^25.0.0",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
