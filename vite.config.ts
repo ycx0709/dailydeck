@@ -6,9 +6,5 @@ export default defineConfig({
   build: {
     outDir: "dist-renderer",
     emptyOutDir: true
-  },
-  test: {
-    environment: "jsdom",
-    globals: true
   }
 });

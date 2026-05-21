@@ -1,4 +1,4 @@
-import type { AppSettings, PersistedData } from "./types";
+import type { AppSettings, PersistedData } from "./types.js";
 
 export const defaultSettings: AppSettings = {
   clipboardRecordingEnabled: true,

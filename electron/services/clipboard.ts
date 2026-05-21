@@ -1,6 +1,6 @@
 import type { Clipboard } from "electron";
-import type { ClipboardItem, PersistedData } from "../../src/shared/types";
-import { JsonStore } from "./storage";
+import type { ClipboardItem, PersistedData } from "../../src/shared/types.js";
+import { JsonStore } from "./storage.js";
 
 const createId = () => crypto.randomUUID();
 

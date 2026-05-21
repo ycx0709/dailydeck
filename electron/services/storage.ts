@@ -1,7 +1,7 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { createInitialData } from "../../src/shared/defaults";
-import type { PersistedData } from "../../src/shared/types";
+import { createInitialData } from "../../src/shared/defaults.js";
+import type { PersistedData } from "../../src/shared/types.js";
 
 export class JsonStore {
   private cache: PersistedData | null = null;
