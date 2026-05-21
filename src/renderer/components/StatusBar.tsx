@@ -7,8 +7,8 @@ type Props = {
 export function StatusBar({ notices, clipboardEnabled, onToggleClipboard }: Props) {
   return (
     <footer className="status-bar">
-      <span>{notices.length > 0 ? notices.join(" ") : "System looks steady."}</span>
-      <button onClick={onToggleClipboard}>{clipboardEnabled ? "Pause clipboard" : "Resume clipboard"}</button>
+      <span>{notices.length > 0 ? notices.join(" ") : "Ctrl + Shift + V 打开快速粘贴面板"}</span>
+      <button onClick={onToggleClipboard}>{clipboardEnabled ? "暂停记录" : "恢复记录"}</button>
     </footer>
   );
 }

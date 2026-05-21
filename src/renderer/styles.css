@@ -10,7 +10,6 @@
 
 body {
   margin: 0;
-  min-width: 760px;
   background: #faf9f5;
 }
 
@@ -189,6 +188,23 @@ input {
   min-height: 540px;
 }
 
+.clipboard-toolbar {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-tabs button.active {
+  border-color: #cc785c;
+  background: #f5ded3;
+}
+
 .button-group {
   display: flex;
   gap: 6px;
@@ -216,6 +232,20 @@ input {
   border-color: #cc785c;
 }
 
+.clipboard-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #766f66;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.clipboard-meta strong {
+  color: #cc785c;
+  font-weight: 600;
+}
+
 .clipboard-item p {
   margin: 0 0 8px;
   max-height: 52px;
@@ -227,7 +257,19 @@ input {
 
 .clipboard-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+}
+
+.clipboard-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.clipboard-actions .danger {
+  color: #8f3326;
 }
 
 .dark-panel {
@@ -254,4 +296,80 @@ input {
   gap: 12px;
   color: #5f574e;
   font-size: 12px;
+}
+
+.quick-paste-shell {
+  width: 100vw;
+  height: 100vh;
+  padding: 14px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 10px;
+  background: #faf9f5;
+  border: 1px solid #d9d0c2;
+  overflow: hidden;
+}
+
+.quick-paste-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.quick-paste-header h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.quick-paste-header p,
+.quick-paste-footer,
+.quick-paste-empty,
+.quick-paste-item small {
+  margin: 0;
+  color: #766f66;
+  font-size: 12px;
+}
+
+.quick-paste-header button {
+  min-width: 42px;
+  min-height: 30px;
+  padding: 5px 8px;
+}
+
+.quick-paste-search {
+  min-height: 42px;
+  font-size: 15px;
+}
+
+.quick-paste-list {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.quick-paste-item {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  background: #fffdf8;
+}
+
+.quick-paste-item.selected {
+  border-color: #cc785c;
+  background: #f5ded3;
+}
+
+.quick-paste-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-paste-footer {
+  text-align: center;
 }

@@ -21,8 +21,8 @@ export function App() {
     <main className="app-shell">
       <header className="app-header">
         <div>
-          <h1>DailyDeck</h1>
-          <p>Clipboard history, kept local.</p>
+          <h1>DailyDeck 剪贴板</h1>
+          <p>Clipboard history, 本地保存最近复制的文本</p>
         </div>
       </header>
 
@@ -30,6 +30,7 @@ export function App() {
         <ClipboardPanel
           items={data.clipboardItems}
           onCopy={(id) => refreshData(dailyDeckApi.copyClipboardItem(id))}
+          onCopyText={(text) => refreshData(dailyDeckApi.copyText(text))}
           onPin={(id, pinned) => refreshData(dailyDeckApi.pinClipboardItem(id, pinned))}
           onDelete={(id) => refreshData(dailyDeckApi.deleteClipboardItem(id))}
           onClear={(includePinned) => refreshData(dailyDeckApi.clearClipboardItems(includePinned))}

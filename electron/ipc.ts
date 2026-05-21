@@ -2,7 +2,16 @@ import { ipcMain } from "electron";
 import { clearClipboardItems, setClipboardPinned, type ClipboardRecorder } from "./services/clipboard.js";
 import type { JsonStore } from "./services/storage.js";
 
-export function registerIpc(store: JsonStore, clipboardRecorder: ClipboardRecorder): void {
+export type QuickPasteActions = {
+  show: () => void;
+  hide: () => void;
+};
+
+export function registerIpc(
+  store: JsonStore,
+  clipboardRecorder: ClipboardRecorder,
+  quickPasteActions?: QuickPasteActions
+): void {
   ipcMain.handle("data:get", () => store.read());
 
   ipcMain.handle("clipboard:copy", async (_event, itemId: string) => {
@@ -10,6 +19,11 @@ export function registerIpc(store: JsonStore, clipboardRecorder: ClipboardRecord
     const item = data.clipboardItems.find((entry) => entry.id === itemId);
     if (item) clipboardRecorder.writeText(item.text);
     return data;
+  });
+
+  ipcMain.handle("clipboard:writeText", async (_event, text: string) => {
+    clipboardRecorder.writeText(text);
+    return store.read();
   });
 
   ipcMain.handle("clipboard:pin", async (_event, itemId: string, pinned: boolean) =>
@@ -33,4 +47,7 @@ export function registerIpc(store: JsonStore, clipboardRecorder: ClipboardRecord
       settings: { ...data.settings, ...updates }
     }))
   );
+
+  ipcMain.handle("quickPaste:show", () => quickPasteActions?.show());
+  ipcMain.handle("quickPaste:hide", () => quickPasteActions?.hide());
 }
