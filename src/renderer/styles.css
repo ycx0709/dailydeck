@@ -246,6 +246,24 @@ input {
   font-weight: 600;
 }
 
+.clipboard-title {
+  margin: 0 0 6px;
+  color: #28231f;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.clipboard-title-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.clipboard-title-editor button {
+  font-size: 12px;
+}
+
 .clipboard-item p {
   margin: 0 0 8px;
   max-height: 52px;
@@ -418,6 +436,15 @@ input {
 
 .quick-paste-item span {
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-paste-item em {
+  overflow: hidden;
+  color: #766f66;
+  font-size: 12px;
+  font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

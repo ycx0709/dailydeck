@@ -7,6 +7,8 @@ const api = {
   copyText: (text: string): Promise<PersistedData> => ipcRenderer.invoke("clipboard:writeText", text),
   pinClipboardItem: (id: string, pinned: boolean): Promise<PersistedData> =>
     ipcRenderer.invoke("clipboard:pin", id, pinned),
+  renameClipboardItem: (id: string, title: string): Promise<PersistedData> =>
+    ipcRenderer.invoke("clipboard:rename", id, title),
   deleteClipboardItem: (id: string): Promise<PersistedData> => ipcRenderer.invoke("clipboard:delete", id),
   clearClipboardItems: (includePinned: boolean): Promise<PersistedData> =>
     ipcRenderer.invoke("clipboard:clear", includePinned),

@@ -29,6 +29,7 @@ describe("clipboard panel AI split", () => {
         onCopy={vi.fn()}
         onCopyText={onCopyText}
         onAnalyze={onAnalyze}
+        onRename={vi.fn()}
         onPin={vi.fn()}
         onDelete={vi.fn()}
         onClear={vi.fn()}

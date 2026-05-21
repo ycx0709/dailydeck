@@ -16,6 +16,7 @@ export type Note = {
 export type ClipboardItem = {
   id: string;
   text: string;
+  title?: string;
   pinned: boolean;
   createdAt: string;
   lastCopiedAt: string;

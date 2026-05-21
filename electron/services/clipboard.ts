@@ -45,6 +45,21 @@ export function setClipboardPinned(data: PersistedData, id: string, pinned: bool
   };
 }
 
+export function renameClipboardItem(data: PersistedData, id: string, title: string): PersistedData {
+  const trimmedTitle = title.trim();
+  return {
+    ...data,
+    clipboardItems: data.clipboardItems.map((item) => {
+      if (item.id !== id) return item;
+      if (!trimmedTitle) {
+        const { title: _title, ...itemWithoutTitle } = item;
+        return itemWithoutTitle;
+      }
+      return { ...item, title: trimmedTitle };
+    })
+  };
+}
+
 export function clearClipboardItems(data: PersistedData, includePinned: boolean): PersistedData {
   return {
     ...data,

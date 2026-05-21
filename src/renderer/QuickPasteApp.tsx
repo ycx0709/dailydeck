@@ -69,7 +69,7 @@ export function QuickPasteApp() {
       <header className="quick-paste-header">
         <div>
           <h1>Quick Paste 快速粘贴</h1>
-          <p>搜索后回车复制到剪贴板</p>
+          <p>搜索名称或内容，回车复制到剪贴板</p>
         </div>
         <button aria-label="关闭快速粘贴面板" onClick={() => void dailyDeckApi.hideQuickPaste()}>
           Esc
@@ -82,7 +82,7 @@ export function QuickPasteApp() {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="搜索剪贴板内容"
+        placeholder="搜索名称或剪贴板内容"
       />
 
       <section className="quick-paste-list" aria-label="快速粘贴列表">
@@ -95,7 +95,8 @@ export function QuickPasteApp() {
               onMouseEnter={() => setSelectedIndex(index)}
               onClick={() => void copyAndClose(item)}
             >
-              <span>{item.text}</span>
+              <span>{item.title ?? item.text}</span>
+              {item.title ? <em>{item.text}</em> : null}
               <small>{item.pinned ? category : new Date(item.lastCopiedAt).toLocaleString()}</small>
             </button>
           );

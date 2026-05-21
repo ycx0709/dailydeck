@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe("quick paste panel", () => {
-  it("searches clipboard items and copies the selected item with Enter", async () => {
+  it("searches clipboard item names and copies the selected item with Enter", async () => {
     const data = {
       ...createInitialData(),
       clipboardItems: [
@@ -22,7 +22,8 @@ describe("quick paste panel", () => {
         },
         {
           id: "clip-2",
-          text: "React 代码片段",
+          text: "React code snippet",
+          title: "Frontend helper",
           pinned: true,
           createdAt: "2026-05-21T00:00:00.000Z",
           lastCopiedAt: "2026-05-21T00:00:00.000Z"
@@ -34,6 +35,7 @@ describe("quick paste panel", () => {
       copyClipboardItem: vi.fn().mockResolvedValue(data),
       copyText: vi.fn().mockResolvedValue(data),
       pinClipboardItem: vi.fn().mockResolvedValue(data),
+      renameClipboardItem: vi.fn().mockResolvedValue(data),
       deleteClipboardItem: vi.fn().mockResolvedValue(data),
       clearClipboardItems: vi.fn().mockResolvedValue(data),
       updateSettings: vi.fn().mockResolvedValue(data),
@@ -48,9 +50,10 @@ describe("quick paste panel", () => {
 
     render(<QuickPasteApp />);
 
-    const search = await screen.findByPlaceholderText("搜索剪贴板内容");
-    fireEvent.change(search, { target: { value: "代码" } });
-    expect(await screen.findByText("React 代码片段")).toBeTruthy();
+    const search = await screen.findByPlaceholderText("搜索名称或剪贴板内容");
+    fireEvent.change(search, { target: { value: "frontend" } });
+    expect(await screen.findByText("Frontend helper")).toBeTruthy();
+    expect(screen.getByText("React code snippet")).toBeTruthy();
     expect(screen.queryByText("normal note")).toBeNull();
 
     fireEvent.keyDown(search, { key: "Enter" });

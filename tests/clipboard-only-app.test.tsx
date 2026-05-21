@@ -27,6 +27,7 @@ describe("clipboard-only app shell", () => {
       copyClipboardItem: vi.fn().mockResolvedValue(data),
       copyText: vi.fn().mockResolvedValue(data),
       pinClipboardItem: vi.fn().mockResolvedValue(data),
+      renameClipboardItem: vi.fn().mockResolvedValue(data),
       deleteClipboardItem: vi.fn().mockResolvedValue(data),
       clearClipboardItems: vi.fn().mockResolvedValue(data),
       updateSettings: vi.fn().mockResolvedValue(data),

@@ -32,6 +32,7 @@ export function App() {
           onCopy={(id) => refreshData(dailyDeckApi.copyClipboardItem(id))}
           onCopyText={(text) => refreshData(dailyDeckApi.copyText(text))}
           onAnalyze={(text) => dailyDeckApi.analyzeClipboardText(text)}
+          onRename={(id, title) => refreshData(dailyDeckApi.renameClipboardItem(id, title))}
           onPin={(id, pinned) => refreshData(dailyDeckApi.pinClipboardItem(id, pinned))}
           onDelete={(id) => refreshData(dailyDeckApi.deleteClipboardItem(id))}
           onClear={(includePinned) => refreshData(dailyDeckApi.clearClipboardItems(includePinned))}

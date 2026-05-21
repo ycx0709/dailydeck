@@ -1,6 +1,11 @@
 import { ipcMain } from "electron";
 import { analyzeClipboardTextWithDeepSeek } from "./services/deepseek.js";
-import { clearClipboardItems, setClipboardPinned, type ClipboardRecorder } from "./services/clipboard.js";
+import {
+  clearClipboardItems,
+  renameClipboardItem,
+  setClipboardPinned,
+  type ClipboardRecorder
+} from "./services/clipboard.js";
 import type { JsonStore } from "./services/storage.js";
 import type { AppSettings } from "../src/shared/types.js";
 
@@ -30,6 +35,10 @@ export function registerIpc(
 
   ipcMain.handle("clipboard:pin", async (_event, itemId: string, pinned: boolean) =>
     store.update((data) => setClipboardPinned(data, itemId, pinned))
+  );
+
+  ipcMain.handle("clipboard:rename", async (_event, itemId: string, title: string) =>
+    store.update((data) => renameClipboardItem(data, itemId, title))
   );
 
   ipcMain.handle("clipboard:delete", async (_event, itemId: string) =>

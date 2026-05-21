@@ -41,6 +41,10 @@ export function searchClipboardItems(
     if (!normalizedQuery) return true;
 
     const label = clipboardCategoryLabels[itemCategory].toLowerCase();
-    return item.text.toLowerCase().includes(normalizedQuery) || label.includes(normalizedQuery);
+    return (
+      item.text.toLowerCase().includes(normalizedQuery) ||
+      (item.title?.toLowerCase().includes(normalizedQuery) ?? false) ||
+      label.includes(normalizedQuery)
+    );
   });
 }
