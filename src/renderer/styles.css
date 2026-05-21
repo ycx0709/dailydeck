@@ -128,6 +128,11 @@ input {
   min-height: 0;
 }
 
+.clipboard-workspace {
+  display: grid;
+  min-height: 0;
+}
+
 .left-stack {
   display: grid;
   gap: 12px;
@@ -181,7 +186,7 @@ input {
 }
 
 .clipboard-panel {
-  min-height: 420px;
+  min-height: 540px;
 }
 
 .button-group {
@@ -196,7 +201,7 @@ input {
 .clipboard-list {
   display: grid;
   gap: 8px;
-  max-height: 480px;
+  max-height: calc(100vh - 210px);
   overflow: auto;
 }
 
