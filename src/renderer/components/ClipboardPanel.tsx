@@ -79,7 +79,7 @@ export function ClipboardPanel({
       </div>
 
       <div className="clipboard-toolbar">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索剪贴板内容" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索名称或剪贴板内容" />
         <div className="category-tabs" role="tablist" aria-label="剪贴板分组">
           {categories.map((entry) => (
             <button
@@ -140,9 +140,10 @@ export function ClipboardPanel({
                     })
                   }
                 >
-                  {isExpanded ? "\u6536\u8d77" : "\u5c55\u5f00"}
+                  {isExpanded ? "收起" : "展开"}
                 </button>
               ) : null}
+
               <div className="clipboard-actions">
                 <button aria-label="Copy item" onClick={() => onCopy(item.id)}>
                   <Copy size={15} />
