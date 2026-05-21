@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createInitialData } from "../shared/defaults";
 import type { PersistedData } from "../shared/types";
 import { dailyDeckApi } from "./api";
+import mascotUrl from "./assets/dailydeck-mascot.png";
 import { ClipboardPanel } from "./components/ClipboardPanel";
 import { StatusBar } from "./components/StatusBar";
 
@@ -24,6 +25,7 @@ export function App() {
           <h1>DailyDeck 剪贴板</h1>
           <p>Clipboard history, 本地保存最近复制的文本</p>
         </div>
+        <img className="app-mascot" src={mascotUrl} alt="DailyDeck clipboard assistant" />
       </header>
 
       <section className="clipboard-workspace">

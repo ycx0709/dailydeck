@@ -35,6 +35,7 @@ export function ClipboardPanel({
   const [category, setCategory] = useState<ClipboardCategory>("all");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftTitle, setDraftTitle] = useState("");
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set());
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [analysisById, setAnalysisById] = useState<Record<string, AiClipboardAnalysis>>({});
   const [errorById, setErrorById] = useState<Record<string, string>>({});
@@ -98,6 +99,8 @@ export function ClipboardPanel({
           const itemCategory = classifyClipboardText(item.text);
           const analysis = analysisById[item.id];
           const isEditing = editingId === item.id;
+          const isLongText = item.text.length > 180 || item.text.includes("\n");
+          const isExpanded = expandedIds.has(item.id);
           return (
             <article className={item.pinned ? "clipboard-item pinned" : "clipboard-item"} key={item.id}>
               <div className="clipboard-meta">
@@ -124,7 +127,22 @@ export function ClipboardPanel({
                 <h3 className="clipboard-title">{item.title}</h3>
               ) : null}
 
-              <p>{item.text}</p>
+              <p className={`clipboard-text ${isLongText && !isExpanded ? "collapsed" : "expanded"}`}>{item.text}</p>
+              {isLongText ? (
+                <button
+                  className="text-toggle"
+                  onClick={() =>
+                    setExpandedIds((current) => {
+                      const next = new Set(current);
+                      if (next.has(item.id)) next.delete(item.id);
+                      else next.add(item.id);
+                      return next;
+                    })
+                  }
+                >
+                  {isExpanded ? "\u6536\u8d77" : "\u5c55\u5f00"}
+                </button>
+              ) : null}
               <div className="clipboard-actions">
                 <button aria-label="Copy item" onClick={() => onCopy(item.id)}>
                   <Copy size={15} />

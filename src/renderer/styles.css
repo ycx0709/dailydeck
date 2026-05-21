@@ -58,6 +58,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .app-header h1,
@@ -75,6 +76,16 @@ input {
   margin: 3px 0 0;
   color: #766f66;
   font-size: 13px;
+}
+
+.app-mascot {
+  width: 78px;
+  height: 78px;
+  flex: 0 0 auto;
+  border: 1px solid #e7e0d4;
+  border-radius: 18px;
+  background: #fffdf8;
+  object-fit: cover;
 }
 
 .metric-grid {
@@ -264,13 +275,33 @@ input {
   font-size: 12px;
 }
 
-.clipboard-item p {
+.clipboard-text {
   margin: 0 0 8px;
-  max-height: 52px;
-  overflow: hidden;
   color: #302b26;
   font-size: 13px;
-  line-height: 1.35;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.clipboard-text.collapsed {
+  display: -webkit-box;
+  max-height: 40px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.clipboard-text.expanded {
+  max-height: 220px;
+  overflow: auto;
+}
+
+.text-toggle {
+  min-height: 28px;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
 }
 
 .clipboard-actions {
@@ -424,7 +455,12 @@ input {
 .quick-paste-item {
   width: 100%;
   display: grid;
-  gap: 4px;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  gap: 5px;
+  min-height: 78px;
+  padding: 10px 12px;
+  line-height: 1.25;
   text-align: left;
   background: #fffdf8;
 }
@@ -435,18 +471,26 @@ input {
 }
 
 .quick-paste-item span {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .quick-paste-item em {
+  display: block;
   overflow: hidden;
   color: #766f66;
   font-size: 12px;
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.quick-paste-item small {
+  display: block;
+  min-height: 15px;
+  line-height: 1.25;
 }
 
 .quick-paste-footer {
