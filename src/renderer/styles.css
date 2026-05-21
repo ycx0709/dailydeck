@@ -272,6 +272,58 @@ input {
   color: #8f3326;
 }
 
+.clipboard-actions button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.ai-result {
+  display: grid;
+  gap: 8px;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px solid #eee6da;
+}
+
+.ai-summary,
+.ai-error {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ai-summary {
+  color: #5f574e;
+}
+
+.ai-error {
+  margin-top: 8px;
+  color: #8f3326;
+}
+
+.ai-tags,
+.ai-entities,
+.ai-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ai-section {
+  display: grid;
+}
+
+.ai-section strong {
+  color: #766f66;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ai-result button {
+  min-height: 30px;
+  font-size: 12px;
+}
+
 .dark-panel {
   background: #242528;
   color: #f8f1e7;

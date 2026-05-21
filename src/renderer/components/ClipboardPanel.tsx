@@ -3,16 +3,16 @@ import { useMemo, useState } from "react";
 import {
   classifyClipboardText,
   clipboardCategoryLabels,
-  processClipboardText,
   searchClipboardItems,
   type ClipboardCategory
 } from "../../shared/clipboardTools";
-import type { ClipboardItem } from "../../shared/types";
+import type { AiClipboardAnalysis, ClipboardItem } from "../../shared/types";
 
 type Props = {
   items: ClipboardItem[];
   onCopy: (id: string) => void;
   onCopyText: (text: string) => void;
+  onAnalyze: (text: string) => Promise<AiClipboardAnalysis>;
   onPin: (id: string, pinned: boolean) => void;
   onDelete: (id: string) => void;
   onClear: (includePinned: boolean) => void;
@@ -20,10 +20,29 @@ type Props = {
 
 const categories: ClipboardCategory[] = ["all", "favorite", "link", "code", "text", "other"];
 
-export function ClipboardPanel({ items, onCopy, onCopyText, onPin, onDelete, onClear }: Props) {
+export function ClipboardPanel({ items, onCopy, onCopyText, onAnalyze, onPin, onDelete, onClear }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ClipboardCategory>("all");
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [analysisById, setAnalysisById] = useState<Record<string, AiClipboardAnalysis>>({});
+  const [errorById, setErrorById] = useState<Record<string, string>>({});
   const filteredItems = useMemo(() => searchClipboardItems(items, query, category), [items, query, category]);
+
+  const analyzeItem = async (item: ClipboardItem) => {
+    setLoadingId(item.id);
+    setErrorById((current) => ({ ...current, [item.id]: "" }));
+    try {
+      const result = await onAnalyze(item.text);
+      setAnalysisById((current) => ({ ...current, [item.id]: result }));
+    } catch (error) {
+      setErrorById((current) => ({
+        ...current,
+        [item.id]: error instanceof Error ? error.message : "AI 拆分失败"
+      }));
+    } finally {
+      setLoadingId(null);
+    }
+  };
 
   return (
     <section className="panel clipboard-panel">
@@ -54,6 +73,7 @@ export function ClipboardPanel({ items, onCopy, onCopyText, onPin, onDelete, onC
       <div className="clipboard-list">
         {filteredItems.map((item) => {
           const itemCategory = classifyClipboardText(item.text);
+          const analysis = analysisById[item.id];
           return (
           <article className={item.pinned ? "clipboard-item pinned" : "clipboard-item"} key={item.id}>
             <div className="clipboard-meta">
@@ -70,18 +90,62 @@ export function ClipboardPanel({ items, onCopy, onCopyText, onPin, onDelete, onC
                 <Pin size={15} />
                 {item.pinned ? "取消收藏" : "收藏"}
               </button>
-              <button onClick={() => onCopyText(processClipboardText(item.text, "removeLineBreaks"))}>去换行</button>
-              <button onClick={() => onCopyText(processClipboardText(item.text, "normalizeWhitespace"))}>
-                去空格
+              <button disabled={loadingId === item.id} onClick={() => void analyzeItem(item)}>
+                {loadingId === item.id ? "AI 拆分中" : "AI 拆分"}
               </button>
-              <button onClick={() => onCopyText(processClipboardText(item.text, "upper"))}>大写</button>
-              <button onClick={() => onCopyText(processClipboardText(item.text, "lower"))}>小写</button>
-              <button onClick={() => onCopyText(processClipboardText(item.text, "formatJson"))}>JSON格式化</button>
               <button aria-label="Delete item" className="danger" onClick={() => onDelete(item.id)}>
                 <Trash2 size={15} />
                 删除
               </button>
             </div>
+            {errorById[item.id] ? <p className="ai-error">{errorById[item.id]}</p> : null}
+            {analysis ? (
+              <div className="ai-result">
+                {analysis.summary ? <p className="ai-summary">{analysis.summary}</p> : null}
+                {analysis.keywords.length > 0 ? (
+                  <div className="ai-tags">
+                    {analysis.keywords.map((keyword) => (
+                      <button key={keyword} onClick={() => onCopyText(keyword)}>
+                        {keyword}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {analysis.entities.length > 0 ? (
+                  <div className="ai-entities">
+                    {analysis.entities.map((entity) => (
+                      <button key={`${entity.label}-${entity.value}`} onClick={() => onCopyText(entity.value)}>
+                        {entity.label}：{entity.value}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {analysis.todos.length > 0 ? (
+                  <div className="ai-section">
+                    <strong>待办</strong>
+                    {analysis.todos.map((todo) => (
+                      <button key={todo} onClick={() => onCopyText(todo)}>
+                        {todo}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {analysis.segments.length > 0 ? (
+                  <div className="ai-section">
+                    <strong>拆分片段</strong>
+                    {analysis.segments.map((segment) => (
+                      <button
+                        aria-label={`复制拆分片段：${segment}`}
+                        key={segment}
+                        onClick={() => onCopyText(segment)}
+                      >
+                        {segment}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </article>
           );
         })}

@@ -1,6 +1,8 @@
 import { ipcMain } from "electron";
+import { analyzeClipboardTextWithDeepSeek } from "./services/deepseek.js";
 import { clearClipboardItems, setClipboardPinned, type ClipboardRecorder } from "./services/clipboard.js";
 import type { JsonStore } from "./services/storage.js";
+import type { AppSettings } from "../src/shared/types.js";
 
 export type QuickPasteActions = {
   show: () => void;
@@ -41,12 +43,20 @@ export function registerIpc(
     store.update((data) => clearClipboardItems(data, includePinned))
   );
 
-  ipcMain.handle("settings:update", async (_event, updates: Partial<{ clipboardRecordingEnabled: boolean }>) =>
+  ipcMain.handle("settings:update", async (_event, updates: Partial<AppSettings>) =>
     store.update((data) => ({
       ...data,
       settings: { ...data.settings, ...updates }
     }))
   );
+
+  ipcMain.handle("ai:analyzeClipboardText", async (_event, text: string) => {
+    const data = await store.read();
+    return analyzeClipboardTextWithDeepSeek(text, {
+      apiKey: data.settings.deepSeekApiKey ?? "",
+      model: data.settings.deepSeekModel
+    });
+  });
 
   ipcMain.handle("quickPaste:show", () => quickPasteActions?.show());
   ipcMain.handle("quickPaste:hide", () => quickPasteActions?.hide());

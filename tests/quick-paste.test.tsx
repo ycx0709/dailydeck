@@ -37,6 +37,7 @@ describe("quick paste panel", () => {
       deleteClipboardItem: vi.fn().mockResolvedValue(data),
       clearClipboardItems: vi.fn().mockResolvedValue(data),
       updateSettings: vi.fn().mockResolvedValue(data),
+      analyzeClipboardText: vi.fn(),
       showQuickPaste: vi.fn().mockResolvedValue(undefined),
       hideQuickPaste: vi.fn().mockResolvedValue(undefined),
       onQuickPasteShown: vi.fn().mockReturnValue(() => undefined)

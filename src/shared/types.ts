@@ -25,6 +25,21 @@ export type AppSettings = {
   clipboardRecordingEnabled: boolean;
   clipboardMaxItems: number;
   launchAtLogin: boolean;
+  deepSeekApiKey?: string;
+  deepSeekModel: string;
+};
+
+export type AiEntity = {
+  label: string;
+  value: string;
+};
+
+export type AiClipboardAnalysis = {
+  summary: string;
+  keywords: string[];
+  segments: string[];
+  todos: string[];
+  entities: AiEntity[];
 };
 
 export type MetricStatus = "ok" | "warn" | "critical" | "unavailable";

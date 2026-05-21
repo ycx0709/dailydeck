@@ -24,40 +24,6 @@ export function classifyClipboardText(text: string): Exclude<ClipboardCategory, 
   return "other";
 }
 
-export function removeLineBreaks(text: string): string {
-  return text.replace(/\s*[\r\n]+\s*/g, " ").trim();
-}
-
-export function normalizeWhitespace(text: string): string {
-  return text.replace(/\s+/g, " ").trim();
-}
-
-export function formatJsonText(text: string): string {
-  try {
-    return JSON.stringify(JSON.parse(text), null, 2);
-  } catch {
-    return text;
-  }
-}
-
-export function processClipboardText(
-  text: string,
-  operation: "removeLineBreaks" | "normalizeWhitespace" | "upper" | "lower" | "formatJson"
-): string {
-  switch (operation) {
-    case "removeLineBreaks":
-      return removeLineBreaks(text);
-    case "normalizeWhitespace":
-      return normalizeWhitespace(text);
-    case "upper":
-      return text.toUpperCase();
-    case "lower":
-      return text.toLowerCase();
-    case "formatJson":
-      return formatJsonText(text);
-  }
-}
-
 export function searchClipboardItems(
   items: ClipboardItem[],
   query: string,

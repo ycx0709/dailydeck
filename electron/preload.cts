@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import type { PersistedData } from "../src/shared/types.js";
+import type { AiClipboardAnalysis, PersistedData } from "../src/shared/types.js";
 
 const api = {
   getData: (): Promise<PersistedData> => ipcRenderer.invoke("data:get"),
@@ -12,6 +12,7 @@ const api = {
     ipcRenderer.invoke("clipboard:clear", includePinned),
   updateSettings: (updates: Partial<PersistedData["settings"]>): Promise<PersistedData> =>
     ipcRenderer.invoke("settings:update", updates),
+  analyzeClipboardText: (text: string): Promise<AiClipboardAnalysis> => ipcRenderer.invoke("ai:analyzeClipboardText", text),
   showQuickPaste: (): Promise<void> => ipcRenderer.invoke("quickPaste:show"),
   hideQuickPaste: (): Promise<void> => ipcRenderer.invoke("quickPaste:hide"),
   onQuickPasteShown: (callback: () => void): (() => void) => {

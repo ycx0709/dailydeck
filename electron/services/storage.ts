@@ -15,7 +15,13 @@ export class JsonStore {
 
     try {
       const raw = await readFile(this.filePath, "utf8");
-      this.cache = { ...createInitialData(), ...JSON.parse(raw) } as PersistedData;
+      const parsed = JSON.parse(raw) as Partial<PersistedData>;
+      const initialData = createInitialData();
+      this.cache = {
+        ...initialData,
+        ...parsed,
+        settings: { ...initialData.settings, ...parsed.settings }
+      } as PersistedData;
     } catch {
       this.cache = createInitialData();
       await this.write(this.cache);
