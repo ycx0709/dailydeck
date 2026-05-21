@@ -16,6 +16,7 @@ describe("clipboard panel names", () => {
     const onRename = vi.fn();
     render(
       <ClipboardPanel
+        language="zh"
         items={[{ ...item, title: "DeepSeek API docs" }]}
         onCopy={vi.fn()}
         onCopyText={vi.fn()}

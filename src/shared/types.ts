@@ -26,6 +26,7 @@ export type AppSettings = {
   clipboardRecordingEnabled: boolean;
   clipboardMaxItems: number;
   launchAtLogin: boolean;
+  language: "zh" | "en";
   deepSeekApiKey?: string;
   deepSeekModel: string;
 };

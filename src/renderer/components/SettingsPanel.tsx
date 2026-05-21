@@ -8,9 +8,23 @@ type Props = {
   onSave: (updates: Partial<AppSettings>) => void;
 };
 
-type Language = "zh" | "en";
+type Language = AppSettings["language"];
 
-const copy = {
+const copy: Record<
+  Language,
+  {
+    back: string;
+    title: string;
+    toggle: string;
+    configured: string;
+    missing: string;
+    aiTitle: string;
+    apiKey: string;
+    model: string;
+    save: string;
+    clear: string;
+  }
+> = {
   zh: {
     back: "返回",
     title: "设置",
@@ -18,6 +32,7 @@ const copy = {
     configured: "AI 已配置",
     missing: "AI 未配置",
     aiTitle: "AI 拆词",
+    apiKey: "API Key",
     model: "模型 ID",
     save: "保存",
     clear: "清空 Key"
@@ -29,16 +44,17 @@ const copy = {
     configured: "AI Ready",
     missing: "AI Missing",
     aiTitle: "AI Split",
+    apiKey: "API Key",
     model: "Model ID",
     save: "Save",
     clear: "Clear Key"
   }
-} satisfies Record<Language, Record<string, string>>;
+};
 
 export function SettingsPanel({ settings, onBack, onSave }: Props) {
   const [apiKey, setApiKey] = useState(settings.deepSeekApiKey ?? "");
   const [model, setModel] = useState(settings.deepSeekModel);
-  const [language, setLanguage] = useState<Language>("zh");
+  const language = settings.language ?? "zh";
   const hasKey = Boolean(settings.deepSeekApiKey?.trim());
   const text = copy[language];
 
@@ -50,6 +66,10 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
     setModel(settings.deepSeekModel);
   }, [settings.deepSeekModel]);
 
+  const switchLanguage = () => {
+    onSave({ language: language === "zh" ? "en" : "zh" });
+  };
+
   return (
     <section className="panel settings-page" aria-label={text.title}>
       <div className="settings-page-header">
@@ -58,11 +78,7 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
           {text.back}
         </button>
         <div className="settings-page-actions">
-          <button
-            className="icon-text-button"
-            type="button"
-            onClick={() => setLanguage((current) => (current === "zh" ? "en" : "zh"))}
-          >
+          <button className="icon-text-button" type="button" onClick={switchLanguage}>
             <Languages size={15} />
             {text.toggle}
           </button>
@@ -83,7 +99,7 @@ export function SettingsPanel({ settings, onBack, onSave }: Props) {
 
         <div className="settings-grid">
           <label className="settings-field">
-            <span>API Key</span>
+            <span>{text.apiKey}</span>
             <input
               aria-label="DeepSeek API Key"
               autoComplete="off"

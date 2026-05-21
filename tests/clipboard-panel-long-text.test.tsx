@@ -18,6 +18,7 @@ describe("clipboard panel long text", () => {
   it("collapses very long clipboard text and lets the user expand it", () => {
     render(
       <ClipboardPanel
+        language="zh"
         items={[item]}
         onCopy={vi.fn()}
         onCopyText={vi.fn()}

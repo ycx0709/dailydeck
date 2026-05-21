@@ -47,6 +47,7 @@ describe("clipboard-only app shell", () => {
 
     expect(await screen.findByText("剪贴板 Clipboard")).toBeTruthy();
     expect(await screen.findByText("remember this")).toBeTruthy();
+    expect(screen.queryByText("Clipboard history · 本地保存 · 快速搜索")).toBeNull();
     expect(screen.queryByLabelText("DeepSeek API Key")).toBeNull();
     await waitFor(() => expect(api.getData).toHaveBeenCalled());
 

@@ -1,15 +1,40 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { searchClipboardItems } from "../shared/clipboardTools";
 import { createInitialData } from "../shared/defaults";
-import { clipboardCategoryLabels, searchClipboardItems } from "../shared/clipboardTools";
-import type { ClipboardItem, PersistedData } from "../shared/types";
+import type { AppSettings, ClipboardItem, PersistedData } from "../shared/types";
 
 const dailyDeckApi = window.dailyDeck;
+
+type Language = AppSettings["language"];
+
+const copy = {
+  zh: {
+    title: "Quick Paste 快速粘贴",
+    subtitle: "搜索名称或内容，回车复制到剪贴板",
+    close: "关闭快速粘贴面板",
+    search: "搜索名称或剪贴板内容",
+    saved: "收藏",
+    empty: "没有匹配的剪贴板内容",
+    footer: "↑↓ 选择 · Enter 复制 · Esc 关闭"
+  },
+  en: {
+    title: "Quick Paste",
+    subtitle: "Search by name or content, press Enter to copy",
+    close: "Close Quick Paste",
+    search: "Search name or clipboard content",
+    saved: "Saved",
+    empty: "No matching clipboard content",
+    footer: "↑↓ Select · Enter Copy · Esc Close"
+  }
+} satisfies Record<Language, Record<string, string>>;
 
 export function QuickPasteApp() {
   const [data, setData] = useState<PersistedData>(() => createInitialData());
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const language = data.settings.language ?? "zh";
+  const text = copy[language];
 
   const items = useMemo(
     () => searchClipboardItems(data.clipboardItems, query, "all").slice(0, 24),
@@ -68,10 +93,10 @@ export function QuickPasteApp() {
     <main className="quick-paste-shell">
       <header className="quick-paste-header">
         <div>
-          <h1>Quick Paste 快速粘贴</h1>
-          <p>搜索名称或内容，回车复制到剪贴板</p>
+          <h1>{text.title}</h1>
+          <p>{text.subtitle}</p>
         </div>
-        <button aria-label="关闭快速粘贴面板" onClick={() => void dailyDeckApi.hideQuickPaste()}>
+        <button aria-label={text.close} onClick={() => void dailyDeckApi.hideQuickPaste()}>
           Esc
         </button>
       </header>
@@ -82,29 +107,26 @@ export function QuickPasteApp() {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="搜索名称或剪贴板内容"
+        placeholder={text.search}
       />
 
-      <section className="quick-paste-list" aria-label="快速粘贴列表">
-        {items.map((item, index) => {
-          const category = clipboardCategoryLabels[item.pinned ? "favorite" : "all"];
-          return (
-            <button
-              className={`quick-paste-item ${index === selectedIndex ? "selected" : ""}`}
-              key={item.id}
-              onMouseEnter={() => setSelectedIndex(index)}
-              onClick={() => void copyAndClose(item)}
-            >
-              <span>{item.title ?? item.text}</span>
-              {item.title ? <em>{item.text}</em> : null}
-              <small>{item.pinned ? category : new Date(item.lastCopiedAt).toLocaleString()}</small>
-            </button>
-          );
-        })}
-        {items.length === 0 && <p className="quick-paste-empty">没有匹配的剪贴板内容</p>}
+      <section className="quick-paste-list" aria-label={language === "zh" ? "快速粘贴列表" : "Quick Paste list"}>
+        {items.map((item, index) => (
+          <button
+            className={`quick-paste-item ${index === selectedIndex ? "selected" : ""}`}
+            key={item.id}
+            onMouseEnter={() => setSelectedIndex(index)}
+            onClick={() => void copyAndClose(item)}
+          >
+            <span>{item.title ?? item.text}</span>
+            {item.title ? <em>{item.text}</em> : null}
+            <small>{item.pinned ? text.saved : new Date(item.lastCopiedAt).toLocaleString()}</small>
+          </button>
+        ))}
+        {items.length === 0 && <p className="quick-paste-empty">{text.empty}</p>}
       </section>
 
-      <footer className="quick-paste-footer">↑↓ 选择 · Enter 复制 · Esc 关闭</footer>
+      <footer className="quick-paste-footer">{text.footer}</footer>
     </main>
   );
 }

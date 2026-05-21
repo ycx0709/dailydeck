@@ -25,6 +25,7 @@ describe("clipboard panel AI split", () => {
 
     render(
       <ClipboardPanel
+        language="zh"
         items={[clipboardItem]}
         onCopy={vi.fn()}
         onCopyText={onCopyText}
@@ -46,5 +47,25 @@ describe("clipboard panel AI split", () => {
     expect(screen.getByText("明天 10 点开会")).toBeTruthy();
     fireEvent.click(screen.getByLabelText("复制拆分片段: 明天 10 点开会"));
     expect(onCopyText).toHaveBeenCalledWith("明天 10 点开会");
+  });
+
+  it("renders clipboard controls in English", () => {
+    render(
+      <ClipboardPanel
+        language="en"
+        items={[clipboardItem]}
+        onCopy={vi.fn()}
+        onCopyText={vi.fn()}
+        onAnalyze={vi.fn()}
+        onRename={vi.fn()}
+        onPin={vi.fn()}
+        onDelete={vi.fn()}
+        onClear={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText("Clipboard")).toBeTruthy();
+    expect(screen.getByText("AI Split")).toBeTruthy();
+    expect(screen.getByPlaceholderText("Search name or clipboard content")).toBeTruthy();
   });
 });

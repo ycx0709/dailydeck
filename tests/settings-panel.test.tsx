@@ -23,7 +23,7 @@ describe("settings panel", () => {
     });
   });
 
-  it("switches setting labels between Chinese and English", () => {
+  it("persists language changes through settings updates", () => {
     const onBack = vi.fn();
     const onSave = vi.fn();
 
@@ -31,14 +31,20 @@ describe("settings panel", () => {
 
     fireEvent.click(screen.getByText("English"));
 
+    expect(onSave).toHaveBeenCalledWith({ language: "en" });
+  });
+
+  it("renders English labels when language is English", () => {
+    const onBack = vi.fn();
+    const onSave = vi.fn();
+    const settings = { ...createInitialData().settings, language: "en" as const };
+
+    render(<SettingsPanel settings={settings} onBack={onBack} onSave={onSave} />);
+
     expect(screen.getByText("Settings")).toBeTruthy();
     expect(screen.getByText("AI Split")).toBeTruthy();
     expect(screen.getByText("Save")).toBeTruthy();
-
-    fireEvent.click(screen.getByText("中文"));
-
-    expect(screen.getByText("设置")).toBeTruthy();
-    expect(screen.getByText("AI 拆词")).toBeTruthy();
+    expect(screen.getByText("中文")).toBeTruthy();
   });
 
   it("clears the saved API key and returns to the clipboard page", () => {

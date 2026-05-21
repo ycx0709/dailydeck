@@ -64,4 +64,37 @@ describe("quick paste panel", () => {
     await waitFor(() => expect(api.copyClipboardItem).toHaveBeenCalledWith("clip-2"));
     expect(api.hideQuickPaste).toHaveBeenCalled();
   });
+
+  it("uses English copy when the app language is English", async () => {
+    const data = {
+      ...createInitialData(),
+      settings: { ...createInitialData().settings, language: "en" as const },
+      clipboardItems: []
+    };
+    const api = {
+      getData: vi.fn().mockResolvedValue(data),
+      copyClipboardItem: vi.fn().mockResolvedValue(data),
+      copyText: vi.fn().mockResolvedValue(data),
+      pinClipboardItem: vi.fn().mockResolvedValue(data),
+      renameClipboardItem: vi.fn().mockResolvedValue(data),
+      deleteClipboardItem: vi.fn().mockResolvedValue(data),
+      clearClipboardItems: vi.fn().mockResolvedValue(data),
+      updateSettings: vi.fn().mockResolvedValue(data),
+      analyzeClipboardText: vi.fn(),
+      showQuickPaste: vi.fn().mockResolvedValue(undefined),
+      hideQuickPaste: vi.fn().mockResolvedValue(undefined),
+      minimizeWindow: vi.fn().mockResolvedValue(undefined),
+      toggleMaximizeWindow: vi.fn().mockResolvedValue(undefined),
+      closeWindow: vi.fn().mockResolvedValue(undefined),
+      onQuickPasteShown: vi.fn().mockReturnValue(() => undefined)
+    } satisfies DailyDeckApi;
+
+    window.dailyDeck = api;
+    const { QuickPasteApp } = await import("../src/renderer/QuickPasteApp");
+
+    render(<QuickPasteApp />);
+
+    expect(await screen.findByText("Quick Paste")).toBeTruthy();
+    expect(screen.getByPlaceholderText("Search name or clipboard content")).toBeTruthy();
+  });
 });

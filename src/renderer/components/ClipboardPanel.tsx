@@ -1,14 +1,10 @@
 import { Copy, Pin, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
-import {
-  classifyClipboardText,
-  clipboardCategoryLabels,
-  searchClipboardItems,
-  type ClipboardCategory
-} from "../../shared/clipboardTools";
-import type { AiClipboardAnalysis, ClipboardItem } from "../../shared/types";
+import { classifyClipboardText, searchClipboardItems, type ClipboardCategory } from "../../shared/clipboardTools";
+import type { AiClipboardAnalysis, AppSettings, ClipboardItem } from "../../shared/types";
 
 type Props = {
+  language: AppSettings["language"];
   items: ClipboardItem[];
   onCopy: (id: string) => void;
   onCopyText: (text: string) => void;
@@ -19,9 +15,112 @@ type Props = {
   onClear: (includePinned: boolean) => void;
 };
 
+type Language = AppSettings["language"];
+
 const categories: ClipboardCategory[] = ["all", "favorite", "link", "code", "text", "other"];
 
+const copy: Record<
+  Language,
+  {
+    title: string;
+    clearUnpinned: string;
+    clearAll: string;
+    search: string;
+    categoryLabels: Record<ClipboardCategory, string>;
+    pinned: string;
+    titleLabel: string;
+    titlePlaceholder: string;
+    save: string;
+    cancel: string;
+    collapse: string;
+    expand: string;
+    copy: string;
+    unpin: string;
+    pin: string;
+    rename: string;
+    name: string;
+    analyzing: string;
+    analyze: string;
+    delete: string;
+    analyzeFailed: string;
+    todos: string;
+    segments: string;
+    copySegmentLabel: string;
+    empty: string;
+  }
+> = {
+  zh: {
+    title: "剪贴板 Clipboard",
+    clearUnpinned: "清空未收藏",
+    clearAll: "清空全部",
+    search: "搜索名称或剪贴板内容",
+    categoryLabels: {
+      all: "全部",
+      favorite: "收藏",
+      link: "链接",
+      code: "代码",
+      text: "文本",
+      other: "其他"
+    },
+    pinned: "已收藏",
+    titleLabel: "收藏名称",
+    titlePlaceholder: "给这条内容命名",
+    save: "保存",
+    cancel: "取消",
+    collapse: "收起",
+    expand: "展开",
+    copy: "复制",
+    unpin: "取消收藏",
+    pin: "收藏",
+    rename: "改名",
+    name: "命名",
+    analyzing: "AI 拆分中",
+    analyze: "AI 拆分",
+    delete: "删除",
+    analyzeFailed: "AI 拆分失败",
+    todos: "待办",
+    segments: "拆分片段",
+    copySegmentLabel: "复制拆分片段",
+    empty: "复制文本后会显示在这里"
+  },
+  en: {
+    title: "Clipboard",
+    clearUnpinned: "Clear unpinned",
+    clearAll: "Clear all",
+    search: "Search name or clipboard content",
+    categoryLabels: {
+      all: "All",
+      favorite: "Saved",
+      link: "Links",
+      code: "Code",
+      text: "Text",
+      other: "Other"
+    },
+    pinned: "Saved",
+    titleLabel: "Saved name",
+    titlePlaceholder: "Name this item",
+    save: "Save",
+    cancel: "Cancel",
+    collapse: "Collapse",
+    expand: "Expand",
+    copy: "Copy",
+    unpin: "Unsave",
+    pin: "Save",
+    rename: "Rename",
+    name: "Name",
+    analyzing: "AI splitting",
+    analyze: "AI Split",
+    delete: "Delete",
+    analyzeFailed: "AI split failed",
+    todos: "Todos",
+    segments: "Segments",
+    copySegmentLabel: "Copy segment",
+    empty: "Copied text will appear here"
+  }
+};
+
 export function ClipboardPanel({
+  language,
   items,
   onCopy,
   onCopyText,
@@ -40,6 +139,7 @@ export function ClipboardPanel({
   const [analysisById, setAnalysisById] = useState<Record<string, AiClipboardAnalysis>>({});
   const [errorById, setErrorById] = useState<Record<string, string>>({});
   const filteredItems = useMemo(() => searchClipboardItems(items, query, category), [items, query, category]);
+  const text = copy[language];
 
   const startRename = (item: ClipboardItem) => {
     setEditingId(item.id);
@@ -61,7 +161,7 @@ export function ClipboardPanel({
     } catch (error) {
       setErrorById((current) => ({
         ...current,
-        [item.id]: error instanceof Error ? error.message : "AI 拆分失败"
+        [item.id]: error instanceof Error ? error.message : text.analyzeFailed
       }));
     } finally {
       setLoadingId(null);
@@ -71,16 +171,16 @@ export function ClipboardPanel({
   return (
     <section className="panel clipboard-panel">
       <div className="panel-header">
-        <h2>剪贴板 Clipboard</h2>
+        <h2>{text.title}</h2>
         <div className="button-group">
-          <button onClick={() => onClear(false)}>清空未收藏</button>
-          <button onClick={() => onClear(true)}>清空全部</button>
+          <button onClick={() => onClear(false)}>{text.clearUnpinned}</button>
+          <button onClick={() => onClear(true)}>{text.clearAll}</button>
         </div>
       </div>
 
       <div className="clipboard-toolbar">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索名称或剪贴板内容" />
-        <div className="category-tabs" role="tablist" aria-label="剪贴板分组">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={text.search} />
+        <div className="category-tabs" role="tablist" aria-label={language === "zh" ? "剪贴板分组" : "Clipboard groups"}>
           {categories.map((entry) => (
             <button
               className={entry === category ? "active" : ""}
@@ -88,7 +188,7 @@ export function ClipboardPanel({
               onClick={() => setCategory(entry)}
               type="button"
             >
-              {clipboardCategoryLabels[entry]}
+              {text.categoryLabels[entry]}
             </button>
           ))}
         </div>
@@ -104,24 +204,24 @@ export function ClipboardPanel({
           return (
             <article className={item.pinned ? "clipboard-item pinned" : "clipboard-item"} key={item.id}>
               <div className="clipboard-meta">
-                <span>{clipboardCategoryLabels[itemCategory]}</span>
-                {item.pinned ? <strong>已收藏</strong> : null}
+                <span>{text.categoryLabels[itemCategory]}</span>
+                {item.pinned ? <strong>{text.pinned}</strong> : null}
               </div>
 
               {isEditing ? (
                 <div className="clipboard-title-editor">
                   <input
-                    aria-label="收藏名称"
+                    aria-label={text.titleLabel}
                     value={draftTitle}
                     onChange={(event) => setDraftTitle(event.target.value)}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") saveRename(item.id);
                       if (event.key === "Escape") setEditingId(null);
                     }}
-                    placeholder="给这条内容命名"
+                    placeholder={text.titlePlaceholder}
                   />
-                  <button onClick={() => saveRename(item.id)}>保存</button>
-                  <button onClick={() => setEditingId(null)}>取消</button>
+                  <button onClick={() => saveRename(item.id)}>{text.save}</button>
+                  <button onClick={() => setEditingId(null)}>{text.cancel}</button>
                 </div>
               ) : item.title ? (
                 <h3 className="clipboard-title">{item.title}</h3>
@@ -140,26 +240,26 @@ export function ClipboardPanel({
                     })
                   }
                 >
-                  {isExpanded ? "收起" : "展开"}
+                  {isExpanded ? text.collapse : text.expand}
                 </button>
               ) : null}
 
               <div className="clipboard-actions">
                 <button aria-label="Copy item" onClick={() => onCopy(item.id)}>
                   <Copy size={15} />
-                  复制
+                  {text.copy}
                 </button>
                 <button aria-label="Pin item" onClick={() => onPin(item.id, !item.pinned)}>
                   <Pin size={15} />
-                  {item.pinned ? "取消收藏" : "收藏"}
+                  {item.pinned ? text.unpin : text.pin}
                 </button>
-                <button onClick={() => startRename(item)}>{item.title ? "改名" : "命名"}</button>
+                <button onClick={() => startRename(item)}>{item.title ? text.rename : text.name}</button>
                 <button disabled={loadingId === item.id} onClick={() => void analyzeItem(item)}>
-                  {loadingId === item.id ? "AI 拆分中" : "AI 拆分"}
+                  {loadingId === item.id ? text.analyzing : text.analyze}
                 </button>
                 <button aria-label="Delete item" className="danger" onClick={() => onDelete(item.id)}>
                   <Trash2 size={15} />
-                  删除
+                  {text.delete}
                 </button>
               </div>
 
@@ -187,7 +287,7 @@ export function ClipboardPanel({
                   ) : null}
                   {analysis.todos.length > 0 ? (
                     <div className="ai-section">
-                      <strong>待办</strong>
+                      <strong>{text.todos}</strong>
                       {analysis.todos.map((todo) => (
                         <button key={todo} onClick={() => onCopyText(todo)}>
                           {todo}
@@ -197,9 +297,13 @@ export function ClipboardPanel({
                   ) : null}
                   {analysis.segments.length > 0 ? (
                     <div className="ai-section">
-                      <strong>拆分片段</strong>
+                      <strong>{text.segments}</strong>
                       {analysis.segments.map((segment) => (
-                        <button aria-label={`复制拆分片段: ${segment}`} key={segment} onClick={() => onCopyText(segment)}>
+                        <button
+                          aria-label={`${text.copySegmentLabel}: ${segment}`}
+                          key={segment}
+                          onClick={() => onCopyText(segment)}
+                        >
                           {segment}
                         </button>
                       ))}
@@ -210,7 +314,7 @@ export function ClipboardPanel({
             </article>
           );
         })}
-        {filteredItems.length === 0 ? <p className="empty">复制文本后会显示在这里</p> : null}
+        {filteredItems.length === 0 ? <p className="empty">{text.empty}</p> : null}
       </div>
     </section>
   );
