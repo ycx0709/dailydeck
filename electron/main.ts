@@ -34,7 +34,8 @@ function createWindow(): BrowserWindow {
     minHeight: 480,
     title: "DailyDeck",
     icon: join(__dirname, "../../assets/tray.ico"),
-    backgroundColor: "#fffaf3",
+    autoHideMenuBar: true,
+    backgroundColor: "#fbfaf7",
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -65,7 +66,8 @@ function createQuickPasteWindow(): BrowserWindow {
     resizable: false,
     title: "Quick Paste",
     icon: join(__dirname, "../../assets/tray.ico"),
-    backgroundColor: "#fffaf3",
+    autoHideMenuBar: true,
+    backgroundColor: "#fbfaf7",
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -88,7 +90,7 @@ function showQuickPasteWindow(): void {
 
   const { workArea } = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
   const width = 560;
-  const height = 420;
+  const height = 440;
   quickPasteWindow.setBounds({
     width,
     height,
