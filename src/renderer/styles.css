@@ -114,9 +114,9 @@ input:focus {
 
 .window-titlebar {
   position: relative;
-  height: 56px;
+  height: 42px;
   margin: 0 -14px;
-  padding: 0 156px 0 16px;
+  padding: 0 138px 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,15 +130,15 @@ input:focus {
   align-items: center;
   gap: 10px;
   min-width: 0;
-  max-width: calc(100% - 156px);
+  max-width: calc(100% - 138px);
   color: var(--text);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 650;
 }
 
 .window-title img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -147,7 +147,7 @@ input:focus {
   position: absolute;
   top: 0;
   right: 0;
-  height: 56px;
+  height: 42px;
   display: flex;
   align-items: center;
   gap: 0;
@@ -155,10 +155,10 @@ input:focus {
 }
 
 .window-controls button {
-  width: 52px;
-  min-width: 52px;
-  height: 56px;
-  min-height: 56px;
+  width: 46px;
+  min-width: 46px;
+  height: 42px;
+  min-height: 42px;
   padding: 0;
   display: inline-flex;
   align-items: center;
