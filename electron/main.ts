@@ -28,13 +28,13 @@ function loadRenderer(window: BrowserWindow, hash = ""): void {
 
 function createWindow(): BrowserWindow {
   const window = new BrowserWindow({
-    width: 980,
-    height: 680,
-    minWidth: 760,
-    minHeight: 560,
+    width: 820,
+    height: 620,
+    minWidth: 620,
+    minHeight: 480,
     title: "DailyDeck",
     icon: join(__dirname, "../../assets/tray.ico"),
-    backgroundColor: "#faf9f5",
+    backgroundColor: "#fffaf3",
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -57,7 +57,7 @@ function createWindow(): BrowserWindow {
 function createQuickPasteWindow(): BrowserWindow {
   const window = new BrowserWindow({
     width: 560,
-    height: 420,
+    height: 440,
     show: false,
     frame: false,
     alwaysOnTop: true,
@@ -65,7 +65,7 @@ function createQuickPasteWindow(): BrowserWindow {
     resizable: false,
     title: "Quick Paste",
     icon: join(__dirname, "../../assets/tray.ico"),
-    backgroundColor: "#faf9f5",
+    backgroundColor: "#fffaf3",
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
