@@ -29,7 +29,7 @@ function createWindow(): BrowserWindow {
   if (process.env.VITE_DEV_SERVER_URL) {
     void window.loadURL(process.env.VITE_DEV_SERVER_URL);
   } else {
-    void window.loadFile(join(__dirname, "../dist-renderer/index.html"));
+    void window.loadFile(join(__dirname, "../../dist-renderer/index.html"));
   }
 
   window.on("close", (event) => {
