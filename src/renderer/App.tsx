@@ -1,4 +1,4 @@
-import { Settings } from "lucide-react";
+import { Minus, Settings, Square, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createInitialData } from "../shared/defaults";
 import type { PersistedData } from "../shared/types";
@@ -25,6 +25,24 @@ export function App() {
 
   return (
     <main className="app-shell">
+      <div className="window-titlebar">
+        <div className="window-title">
+          <img src={mascotUrl} alt="" />
+          <span>DailyDeck</span>
+        </div>
+        <div className="window-controls">
+          <button aria-label="最小化" type="button" onClick={() => void dailyDeckApi.minimizeWindow()}>
+            <Minus size={14} />
+          </button>
+          <button aria-label="最大化" type="button" onClick={() => void dailyDeckApi.toggleMaximizeWindow()}>
+            <Square size={12} />
+          </button>
+          <button aria-label="关闭" className="close-button" type="button" onClick={() => void dailyDeckApi.closeWindow()}>
+            <X size={15} />
+          </button>
+        </div>
+      </div>
+
       <header className="app-header">
         <div className="app-title">
           <img className="app-mascot" src={mascotUrl} alt="DailyDeck clipboard assistant" />

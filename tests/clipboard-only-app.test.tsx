@@ -34,6 +34,9 @@ describe("clipboard-only app shell", () => {
       analyzeClipboardText: vi.fn(),
       showQuickPaste: vi.fn().mockResolvedValue(undefined),
       hideQuickPaste: vi.fn().mockResolvedValue(undefined),
+      minimizeWindow: vi.fn().mockResolvedValue(undefined),
+      toggleMaximizeWindow: vi.fn().mockResolvedValue(undefined),
+      closeWindow: vi.fn().mockResolvedValue(undefined),
       onQuickPasteShown: vi.fn()
     } satisfies DailyDeckApi;
 

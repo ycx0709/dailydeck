@@ -17,6 +17,9 @@ const api = {
   analyzeClipboardText: (text: string): Promise<AiClipboardAnalysis> => ipcRenderer.invoke("ai:analyzeClipboardText", text),
   showQuickPaste: (): Promise<void> => ipcRenderer.invoke("quickPaste:show"),
   hideQuickPaste: (): Promise<void> => ipcRenderer.invoke("quickPaste:hide"),
+  minimizeWindow: (): Promise<void> => ipcRenderer.invoke("window:minimize"),
+  toggleMaximizeWindow: (): Promise<void> => ipcRenderer.invoke("window:toggleMaximize"),
+  closeWindow: (): Promise<void> => ipcRenderer.invoke("window:close"),
   onQuickPasteShown: (callback: () => void): (() => void) => {
     const listener = () => callback();
     ipcRenderer.on("quickPaste:shown", listener);

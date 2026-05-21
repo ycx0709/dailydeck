@@ -1,4 +1,4 @@
-import { ipcMain } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import { analyzeClipboardTextWithDeepSeek } from "./services/deepseek.js";
 import {
   clearClipboardItems,
@@ -69,4 +69,12 @@ export function registerIpc(
 
   ipcMain.handle("quickPaste:show", () => quickPasteActions?.show());
   ipcMain.handle("quickPaste:hide", () => quickPasteActions?.hide());
+  ipcMain.handle("window:minimize", (event) => BrowserWindow.fromWebContents(event.sender)?.minimize());
+  ipcMain.handle("window:toggleMaximize", (event) => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window) return;
+    if (window.isMaximized()) window.unmaximize();
+    else window.maximize();
+  });
+  ipcMain.handle("window:close", (event) => BrowserWindow.fromWebContents(event.sender)?.close());
 }

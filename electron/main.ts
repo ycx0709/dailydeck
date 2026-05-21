@@ -32,6 +32,7 @@ function createWindow(): BrowserWindow {
     height: 620,
     minWidth: 620,
     minHeight: 480,
+    frame: false,
     title: "DailyDeck",
     icon: join(__dirname, "../../assets/tray.ico"),
     autoHideMenuBar: true,
