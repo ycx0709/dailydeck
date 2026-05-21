@@ -1,0 +1,7 @@
+node_modules/
+dist-electron/
+dist-renderer/
+.vite/
+.npm-cache/
+coverage/
+*.log
