@@ -147,9 +147,9 @@ input:focus {
 
 .window-controls {
   position: absolute;
-  top: 0;
+  top: 4px;
   right: 18px;
-  height: 60px;
+  height: 34px;
   display: flex;
   align-items: center;
   gap: 18px;
