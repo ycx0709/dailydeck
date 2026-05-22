@@ -114,14 +114,15 @@ input:focus {
 
 .window-titlebar {
   position: relative;
-  height: 42px;
+  height: 48px;
   margin: 0 -14px;
-  padding: 0 138px 0 14px;
+  padding: 0 150px 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(232, 223, 210, 0.86);
-  background: rgba(255, 253, 249, 0.94);
+  border-bottom: 1px solid rgba(222, 211, 197, 0.95);
+  background: linear-gradient(180deg, #fffefa 0%, #fbf6ee 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.78) inset;
   -webkit-app-region: drag;
 }
 
@@ -130,15 +131,16 @@ input:focus {
   align-items: center;
   gap: 10px;
   min-width: 0;
-  max-width: calc(100% - 138px);
+  max-width: calc(100% - 150px);
   color: var(--text);
-  font-size: 14px;
-  font-weight: 650;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .window-title img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -147,7 +149,7 @@ input:focus {
   position: absolute;
   top: 0;
   right: 0;
-  height: 42px;
+  height: 48px;
   display: flex;
   align-items: center;
   gap: 0;
@@ -155,29 +157,27 @@ input:focus {
 }
 
 .window-controls button {
-  width: 46px;
-  min-width: 46px;
-  height: 42px;
-  min-height: 42px;
+  width: 50px;
+  min-width: 50px;
+  height: 48px;
+  min-height: 48px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-color: transparent;
+  border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--muted);
 }
 
 .window-controls button:hover {
-  border-color: var(--line);
-  background: var(--surface-soft);
+  background: rgba(140, 87, 58, 0.08);
   color: var(--text);
 }
 
 .window-controls .close-button:hover {
-  border-color: #e9c2b8;
-  background: #f8e3dd;
+  background: #f4d9d1;
   color: var(--danger);
 }
 
